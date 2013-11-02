@@ -1,12 +1,12 @@
 from distutils.core import setup
 
 setup(
-    name = "python-nrpe",
+    name = "pynrpe",
     version='0.1',
     description='Python client for NRPE protocol',
     author='Stiletto',
     author_email='blasux@blasux.ru',
-    license='WTFPL2'
-    url='http://github.com/stiletto/python-nrpe',
+    license='WTFPL2',
+    url='http://github.com/stiletto/pynrpe',
     py_modules = ['pynrpe'],
 )
