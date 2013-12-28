@@ -8,7 +8,7 @@ __all__ = [ 'NRPE_REQUEST', 'NRPE_RESPONSE', 'NRPE_OK', 'NRPE_WARNING',
             'NRPE_CRITICAL', 'NRPE_UNKNOWN', 'PACKET_SIZE', 'create_request',
             'parse_response', 'check_nrpe' ]
 
-import struct, binascii, socket
+import struct, binascii, socket, ssl
 
 NRPE_REQUEST = 1
 NRPE_RESPONSE = 2
@@ -53,12 +53,16 @@ def parse_response(response):
     assert crc == calculated_crc
     return version, _type, crc, result, buffer
 
-def check_nrpe(host, command, port=5666, timeout=10):
+def check_nrpe(host, command, port=5666, timeout=10, use_ssl=False):
     """ You should use this function if you just need to make a request
     and don't want to bother with how the protocol works. You give it a
     command and a hostname, it gives you state code and status string.
     (no crap in status string)."""
-    conn = socket.create_connection((host, port), timeout=timeout)
+    if use_ssl:
+        conn = ssl.wrap_socket(socket.create_connection((host, port), timeout=timeout),
+                               ssl_version=ssl.PROTOCOL_TLSv1, ciphers="ADH")
+    else:
+        conn = socket.create_connection((host, port), timeout=timeout)
     req = create_request(2, command)
     conn.sendall(req)
 
