@@ -79,4 +79,4 @@ if __name__=="__main__":
     parser.add_argument('command', metavar='COMMAND', help='NRPE command')
     args = parser.parse_args()
 
-    print check_nrpe(args.host, args.command)
+    print (check_nrpe(args.host, args.command))
